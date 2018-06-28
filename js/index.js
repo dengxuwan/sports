@@ -17,15 +17,17 @@ var vue = new Vue({
 
       },
       updated: function() {},
+
+
       data() {
             return {
                   tempVar: true,
-                  travelInfo: {
+                  activityInfo: {
                         name: '',
                         phone: '',
-                        fromAddress: '',
-                        distination: '',
-                        type: '',
+                        address: '',
+                        title: '',
+                        category: '',
                         count: '',
                         price: '',
                         remark: '',
@@ -54,25 +56,25 @@ var vue = new Vue({
                               required: true,
                               message: "请填写联系方式"
                         }],
-                        type: [{
+                        category: [{
                               trigger: 'change',
                               required: true,
-                              message: "请填写成辆型号"
+                              message: "请选择分类"
                         }],
-                        fromAddress: [{
+                        address: [{
                               trigger: 'change',
                               required: true,
-                              message: "请填写出发地点！"
+                              message: "请填写场地地点！"
                         }],
                         goTime: [{
                               trigger: 'change',
                               required: true,
-                              message: "请填写争取的出发时间！"
+                              message: "请填写活动时间！"
                         }],
-                        distination: [{
+                        title: [{
                               trigger: 'change',
                               required: true,
-                              message: "请填写目的地点！"
+                              message: "请填写标题！"
                         }],
                         count: [{
                               trigger: 'change',
@@ -86,14 +88,11 @@ var vue = new Vue({
                         }],
 
                   },
-                  allList: [], //所有行程列表
+                  allList: [], //所有活动列表
                   cloneList: [],
-                  myList: [], // 我的行程列表
-                  myAttent: [], //我的参与列表
                   labelWidth: '100px', //表单左边label文字宽度
                   curWallet: "", //钱包地址
                   allListLoading: true,
-                  personalLoading: true,
                   dialogVisible: false,
                   attentInfo: {
                         name: "",
@@ -103,14 +102,14 @@ var vue = new Vue({
                   detailRow: {
                         name: '',
                         phone: '',
-                        fromAddress: '',
-                        distination: '',
-                        type: '',
+                        address: '',
+                        title: '',
+                        category: '',
                         count: '',
                         price: '',
                         remark: '',
                         goTime: '',
-                        attents: [],
+                        attents: []
                   },
                   tabPosition: 'left',
                   timer: {},
@@ -118,9 +117,8 @@ var vue = new Vue({
                   // 要展开的行，数值的元素是row的key值
                   expands: [],
                   search: {
-                        from: '',
-                        to: '',
-                        status: '',
+                        address: '',
+                        status: ''
                   }
             }
       },
@@ -202,7 +200,7 @@ var vue = new Vue({
                   });
             },
             publish: function() {
-                  var args = [JSON.stringify(vue.travelInfo)];
+                  var args = [JSON.stringify(vue.activityInfo)];
                   defaultOptions.listener = function(data) {
                         if (data.txhash) {
                               vue.$notify({
@@ -213,12 +211,12 @@ var vue = new Vue({
                                     offset: 200
                               });
                               //清空
-                              vue.travelInfo = {
+                              vue.activityInfo = {
                                           name: '',
                                           phone: '',
-                                          fromAddress: '',
-                                          distination: '',
-                                          type: '',
+                                          address: '',
+                                          title: '',
+                                          category: '',
                                           count: '',
                                           price: '',
                                           remark: '',
@@ -226,7 +224,7 @@ var vue = new Vue({
                                     },
 
                                     console.log("交易号为" + vue.serialNumber, "发布行程交易hash");
-                              var neburl = "https://mainnet.nebulas.io";
+                              var neburl = "https://testnet.nebulas.io";
                               var txhash = data.txhash;
                               intervalQuery = setInterval(() => {
                                     console.log('wait......');
@@ -248,7 +246,7 @@ var vue = new Vue({
                                                       // success
                                                       clearInterval(intervalQuery);
                                                 } else if (d.data.result.status === 0) {
-                                                       vue.$notify({
+                                                      vue.$notify({
                                                             message: "分享失败，有可能是您的余额不足!",
                                                             duration: 0,
                                                             showClose: true,
@@ -270,7 +268,7 @@ var vue = new Vue({
                         }
                   };
 
-                  vue.serialNumber = nebPay.call(config.contractAddr, "0", config.addTravel, JSON.stringify(args), defaultOptions);
+                  vue.serialNumber = nebPay.call(config.contractAddr, "0", config.addActivity, JSON.stringify(args), defaultOptions);
 
             },
             //处理list
@@ -305,31 +303,38 @@ var vue = new Vue({
                   return respArr;
 
             },
-            //获取所有行程列表
+            //获取所有活动列表
             getAll: function() {
                   this.allListLoading = true;
-                  var address = "";
-                  if (!this.curWallet || this.curWallet === '') {
-                        address = config.myAddress;
-                  } else {
-                        address = this.curWallet;
-                  }
-                  query(address, config.getAll, "", function(resp) {
-                        console.log(resp, "查询所有列表");
+                  query(config.myAddress, config.getAll, "", function(resp) {
+                        console.log(resp, "查询所有活动列表");
                         var respArr = JSON.parse(resp.result)
                         vue.allList = vue.handleList(respArr);
                         vue.cloneList = vue.allList;
-                        console.log(vue.allList, "查询所有列表");
+                        console.log(vue.allList, "查询所有多动列表");
+                        filterCategory('羽毛球');
                         vue.allListLoading = false;
                         vue.tempVar = false;
                   });
+            },
+            filterCategory: function(category) {
+                  var list = [];
+                  if (vue.cloneList && vue.cloneList.size > 0) {
+                        for (var i = 0; i < vue.cloneList.length; i++) {
+                              var activityInfo = vue.cloneList[i];
+                              if (activityInfo.category === category) {
+                                    list.push(list);
+                              }
+                        }
+                        vue.allList = list;
+                  }
             },
             toAttent: function(row) {
                   if (row.attents.length >= row.count) {
                         this.$message({
                               showClose: true,
                               duration: 5000,
-                              message: '此行程参与人数已满！',
+                              message: '此活动参与人数已满！',
                               type: 'warning'
                         });
                         return;

@@ -32,8 +32,8 @@ var ActivityInfo = function(obj) {
 		this.author = obj.author;
 		this.phone = obj.phone;
 		this.address = obj.address;
-		this.distination = obj.distination;
-		this.type = obj.type;
+		this.title = obj.title;
+		this.category = obj.category;
 		this.count = obj.count;
 		this.price = obj.price;
 		this.remark = obj.remark;
@@ -46,9 +46,9 @@ var ActivityInfo = function(obj) {
 		this.name = "";
 		this.author = "";
 		this.phone = "";
-		this.fromAddress = "";
-		this.distination = "";
-		this.type = "";
+		this.address = "";
+		this.title = "";
+		this.category = "";
 		this.count = "";
 		this.price = "";
 		this.goTime = "";
@@ -58,11 +58,11 @@ var ActivityInfo = function(obj) {
 		this.comments = [];
 	}
 };
-TravelInfo.prototype = {
+ActivityInfo.prototype = {
 	toString: function() {
 		return JSON.stringify(this);
 	},
-	//添加乘客信息
+	//添加参与者信息
 	addAttent: function(attent) {
 		if (!this.attents || this.attents == null) {
 			this.attents = [];
@@ -80,6 +80,7 @@ TravelInfo.prototype = {
 		}
 	}
 };
+//参与者信息对象
 var AttentInfo = function(obj) {
 	if (typeof obj === "string") {
 		obj = JSON.parse(obj);
@@ -87,7 +88,7 @@ var AttentInfo = function(obj) {
 	if (typeof obj === "object") {
 		this.id = obj.id;
 		this.address = obj.address;
-		this.travelId = obj.travelId;
+		this.acvitityId = obj.acvitityId;
 		this.name = obj.name;
 		this.price = obj.price;
 		this.phone = obj.phone;
@@ -95,7 +96,7 @@ var AttentInfo = function(obj) {
 	} else {
 		this.id = "";
 		this.address = "";
-		this.travelId = "";
+		this.acvitityId = "";
 		this.price = "";
 		this.name = "";
 		this.phone = "";
@@ -107,7 +108,35 @@ AttentInfo.prototype = {
 		return JSON.stringify(this);
 	}
 };
-var hitchRideContract = function() {
+//财务记录对象
+var FinanceRecord = function(obj) {
+	if (typeof obj === "string") {
+		obj = JSON.parse(obj);
+	}
+	if (typeof obj === "object") {
+		this.id = obj.id;
+		this.activityId = obj.activityId;
+		this.from = obj.from;
+		this.to = obj.to;
+		this.type = obj.type;
+		this.price = obj.price;
+		this.time = obj.time;
+	} else {
+		this.id = "";
+		this.activityId = "";
+		this.from = "";
+		this.to = "";
+		this.type = "其它";
+		this.price = "";
+		this.time = "";
+	}
+};
+FinanceRecord.prototype = {
+	toString: function() {
+		return JSON.stringify(this);
+	}
+};
+var sportContract = function() {
 	// 定义全局变量
 	LocalContractStorage.defineProperties(this, {
 		_currentUser: "", // 当前使用人地址
@@ -117,15 +146,31 @@ var hitchRideContract = function() {
 	});
 	// 定义全局的map变量
 	LocalContractStorage.defineMapProperties(this, {
-		"travelInfos": {
+		"activityInfos": {
 			parse: function(value) {
-				return new TravelInfo(value);
+				return new ActivityInfo(value);
 			},
 			stringify: function(o) {
 				return o.toString();
 			}
 		},
-		"travelInfoKeys": {
+		"activityInfoKeys": {
+			parse: function(value) {
+				return value.toString();
+			},
+			stringify: function(o) {
+				return o.toString();
+			}
+		},
+		"recordInfos": {
+			parse: function(value) {
+				return new FinanceRecord(value);
+			},
+			stringify: function(o) {
+				return o.toString();
+			}
+		},
+		"recordInfoKeys": {
 			parse: function(value) {
 				return value.toString();
 			},
@@ -135,29 +180,32 @@ var hitchRideContract = function() {
 		}
 	});
 };
-hitchRideContract.prototype = {
+sportContract.prototype = {
 	init: function() {
 		this._currentUser = Blockchain.transaction.from;
 		this._fee = new BigNumber(0.01); // 手续费
 		this._wei = 1000000000000000000; // 单位
 		this._jSize = 0;
-		var travelInfo = new TravelInfo({
+		this._rSize = 0;
+
+		var activityInfo = new ActivityInfo({
 			id: "one",
-			name: "开火车的小猴子",
+			name: "邓先生",
 			author: "n1JeDTMq5xHq6Y16yApYbMdT4Vw4K9kzbK9",
 			phone: "18907395221",
-			fromAddress: "深圳南山区科技园",
-			distination: "湖南邵阳市人民政府",
-			type: "奥迪A6",
-			count: "3",
-			price: "15",
-			remark: "准时出发，请乘客准时到达南山科技园立交桥上车",
-			goTime: "1529131359517",
+			address: "深圳南山体育馆01场",
+			title: "相约打羽毛球，来的直接支付订场",
+			category: "羽毛球",
+			count: "5",
+			price: "0.0001",
+			remark: "自带羽毛球拍，这边羽毛球拍有限，谢谢",
+			goTime: "1529111359517",
 			time: "1529131359517",
-			attents: []
+			attents: [],
+			comments: []
 		});
-		this.travelInfoKeys.set(this._jSize, travelInfo.id);
-		this.travelInfos.set(travelInfo.id, travelInfo);
+		this.activityInfoKeys.set(this._jSize, activityInfo.id);
+		this.activityInfos.set(activityInfo.id, activityInfo);
 		this._jSize++;
 	},
 	//智能合约中验证地址正确性
@@ -234,26 +282,40 @@ hitchRideContract.prototype = {
 		objClone.valueOf = obj.valueOf;
 		return objClone;
 	},
-	// 查询所有行程
+	// 查询所有活动
 	getAll: function() {
 		var list = [];
 		for (var i = 0; i < this._jSize; i++) {
-			var key = this.travelInfoKeys.get(i);
-			var travelInfo = this.travelInfos.get(key);
-			travelInfo['id'] = key;
-			list.push(travelInfo);
+			var key = this.activityInfoKeys.get(i);
+			var activityInfo = this.activityInfos.get(key);
+			activityInfo['id'] = key;
+			list.push(activityInfo);
 		}
 		list = list.reverse(); //反转
 		return list;
 	},
-	//添加评论
-	comment: function(travelId, content) {
+	// 查询某类型下的活动
+	getByCategory: function(category) {
+		var list = [];
+		for (var i = 0; i < this._jSize; i++) {
+			var key = this.activityInfoKeys.get(i);
+			var activityInfo = this.activityInfos.get(key);
+			if (category === activityInfo.category) {
+				activityInfo['id'] = key;
+				list.push(activityInfo);
+			}
+		}
+		list = list.reverse(); //反转
+		return list;
+	},
+	//给活动添加评论
+	comment: function(activityId, content) {
 		var from = Blockchain.transaction.from;
 		var time = Blockchain.transaction.timestamp.toString();
 		var id = from + time;
-		var travelInfo = this.travelInfos.get(travelId);
-		if (!travelInfo) {
-			throw new Error("没有找到此行程信息!");
+		var activityInfo = this.activityInfoKeys.get(activityId);
+		if (!activityInfo) {
+			throw new Error("没有找到此活动信息!");
 		}
 		var comment = new Comment({
 			id: id,
@@ -261,92 +323,125 @@ hitchRideContract.prototype = {
 			content: content,
 			time: time
 		});
-		travelInfo.addComment(comment);
-		this.travelInfos.set(travelId, travelInfo);
+		activityInfo.addComment(comment);
+		this.activityInfoKeys.set(activityId, activityInfo);
 		return "success";
 	},
-	//添加行程
-	addTravel: function(arg) {
+	//添加活动信息
+	addActivity: function(arg) {
 		var from = Blockchain.transaction.from;
 		var time = Blockchain.transaction.timestamp.toString();
-		var args = new TravelInfo(arg);
+		var args = new ActivityInfo(arg);
 		args.author = from;
 		args['id'] = from + time;
 		args.comments = [];
 		args.attents = [];
 		args['time'] = time;
 
-		this.travelInfoKeys.set(this._jSize, args.id);
-		this.travelInfos.set(args.id, args);
+		this.activityInfoKeys.set(this._jSize, args.id);
+		this.activityInfos.set(args.id, args);
 		this._jSize++;
 	},
-	// 查询自己发布的行程
+	// 查询自己发布的活动
 	getMyList: function() {
 		var from = Blockchain.transaction.from;
 		var list = [];
 		for (var i = 0; i < this._jSize; i++) {
-			var key = this.travelInfoKeys.get(i);
-			var travelInfo = this.travelInfos.get(key);
-			if (travelInfo.author === from) {
-				list.push(travelInfo);
+			var key = this.activityInfoKeys.get(i);
+			var activityInfo = this.activityInfos.get(key);
+			if (activityInfo.author === from) {
+				list.push(activityInfo);
 			}
 		}
 		return list.reverse();
 	},
 	//参加行程
-	attention: function(travelId, name, phone) {
+	attention: function(activityId, name, phone) {
 		var from = Blockchain.transaction.from;
 		var time = Blockchain.transaction.timestamp.toString();
 		var value = Blockchain.transaction.value;
-		var travelInfo = this.travelInfos.get(travelId);
-		if (!travelInfo) {
-			throw new Error("没有找到此行程信息!");
+		var activityInfo = this.activityInfos.get(activityId);
+		if (!activityInfo) {
+			throw new Error("没有找到此活动信息!");
 		}
-		if (!travelInfo.attents || travelInfo.attents.length >= travelInfo.count) {
+		if (!activityInfo.attents || activityInfo.attents.length >= activityInfo.count) {
 			throw new Error("count fail");
 		}
-		if ((value.div(this._wei)).toString() !== travelInfo.price) {
+		if ((value.div(this._wei)).toString() !== activityInfo.price) {
 			throw new Error("Error amount");
 		}
-		if (travelInfo.attents && travelInfo.attents.length > 0) {
-			for (var i = 0; i < travelInfo.attents.length; i++) {
-				var attentInfo = travelInfo.attents[i];
-				if (attentInfo.address === from) {
-					throw new Error('isRepeat');
-				}
-			}
-		}
-		var result = Blockchain.transfer(travelInfo.author, value);
+
+		var result = Blockchain.transfer(activityInfo.author, value);
 		if (!result) {
 			throw new Error("fail transfer");
 		}
 		var attentInfo = new AttentInfo({
 			id: from + time,
 			address: from,
-			travelId: travelId,
+			activityId: activityId,
 			name: name,
 			phone: phone,
 			time: time
 		});
-		travelInfo.addAttent(attentInfo);
-		this.travelInfos.set(travelId, travelInfo);
+		activityInfo.addAttent(attentInfo);
+		this.activityInfos.set(activityId, activityInfo);
+
+		var id = from + time;
+		var record = new FinanceRecord({
+			id: id + "1",
+			activityId: activityId,
+			from: from,
+			to: activityInfo.author,
+			type: "支出",
+			price: activityInfo.price,
+			time: time
+		});
+		var record1 = new FinanceRecord({
+			id: id + "2",
+			activityId: activityId,
+			from: from,
+			to: activityInfo.author,
+			type: "收入",
+			price: activityInfo.price,
+			time: time
+		});
+		this.recordInfoKeys.set(this._rSize, id + "1");
+		this.recordInfos.set(id + "1", record);
+		this._rSize++;
+
+		this.recordInfoKeys.set(this._rSize, id + "2");
+		this.recordInfos.set(id + "2", record1);
+		this._rSize++;
 		return "success";
 	},
-	//查看自己参加的行程
+	//查看自己参加的活动列表
 	getMyAttents: function() {
 		var from = Blockchain.transaction.from;
 		var list = [];
 		for (var i = 0; i < this._jSize; i++) {
-			var key = this.travelInfoKeys.get(i);
-			var travelInfo = this.travelInfos.get(key);
-			var attentInfos = travelInfo.attents;
+			var key = this.activityInfoKeys.get(i);
+			var activityInfo = this.activityInfos.get(key);
+			var attentInfos = activityInfo.attents;
 			if (attentInfos.length > 0) {
 				for (var j = 0; j < attentInfos.length; j++) {
 					var attentInfo = attentInfos[j];
 					if (attentInfo.address === from) {
-						list.push(travelInfo);
+						list.push(activityInfo);
 					}
 				}
+			}
+		}
+		return list.reverse();
+	},
+	//获取我的财务记录
+	getMyRecord: function() {
+		var from = Blockchain.transaction.from;
+		var list = [];
+		for (var i = 0; i < this._rSize; i++) {
+			var key = this.recordInfoKeys.get(i);
+			var record = this.recordInfos.get(key);
+			if (record.from === from || record.to === from) {
+				list.push(record);
 			}
 		}
 		return list.reverse();
@@ -354,9 +449,10 @@ hitchRideContract.prototype = {
 	//查询个人中心需要的信息
 	personal: function() {
 		var obj = {};
-		obj['myTravels'] = this.getMyList();
+		obj['myActivies'] = this.getMyList();
 		obj['attentsRecords'] = this.getMyAttents();
+		obj['records'] = this.getMyRecord();
 		return obj;
 	}
 };
-module.exports = hitchRideContract;
+module.exports = sportContract;

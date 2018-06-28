@@ -11,13 +11,13 @@ var NebPay = require("nebpay");
 var nebPay = new NebPay();
 var config = {
 	chainId: 1,
-	apiPrefix: "https://mainnet.nebulas.io", //https://testnet.nebulas.io  https://mainnet.nebulas.io
-	contractAddr: "n1n1X7Ea9BBKBhsVqwuk9W25neYnv3FTMEJ", //main n1zsohpv63CnmUs7aeVBfgeQBozpK5bmTMk test n21iah7tXxgxTZ6R81n9UuWGwULcuVansBd
+	apiPrefix: "https://testnet.nebulas.io", //https://testnet.nebulas.io  https://mainnet.nebulas.io
+	contractAddr: "n1wVtDBSQsdDjd5nRdKyiDiGY3Emq3VaQyH", //main n1zsohpv63CnmUs7aeVBfgeQBozpK5bmTMk test n21iah7tXxgxTZ6R81n9UuWGwULcuVansBd
 	myAddress: Account.NewAccount().getAddressString(),
 	gaslimit: 2000000,
 	gasprice: 1000000,
 	transfer: "transfer",
-	addTravel: "addTravel",
+	addActivity: "addActivity",
 	attention: "attention",
 	getAll: "getAll",
 	comment: "comment", //添加评论

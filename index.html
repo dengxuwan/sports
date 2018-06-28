@@ -19,6 +19,7 @@
     <!-- Custom styles for this template -->
     <link href="./css/agency.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/search.css">
 </head>
 
   <body id="page-top">
@@ -58,7 +59,7 @@
     </nav>
 
     <!-- Header -->
-    <header class="masthead" style="margin-top: 54px">
+    <header class="masthead" style="margin-top: 53px">
       <div class="container">
       </div>
     </header>
@@ -108,47 +109,47 @@
           </div>
         </div>
         <el-row :gutter="20" class="row_cust">  
-          <el-form :model="travelInfo" ref="ruleForm" :label-width="labelWidth" :rules="rules">
+          <el-form :model="activityInfo" ref="ruleForm" :label-width="labelWidth" :rules="rules">
             <el-col :xs="20" :sm="20" :md="15" :lg="15" :xg="15">
               <el-form-item label="姓名:" prop="name">
-                <el-input v-model="travelInfo.name" ></el-input>
+                <el-input v-model="activityInfo.name" ></el-input>
                </el-form-item>
             </el-col>
 
             <el-col :xs="20" :sm="20" :md="10" :lg="10" :xg="10">
               <el-form-item label="联系方式:" prop="phone">
-                <el-input v-model="travelInfo.phone" ></el-input>
+                <el-input v-model="activityInfo.phone" ></el-input>
                </el-form-item>
             </el-col>
 
             <el-col :xs="20" :sm="20" :md="10" :lg="10" :xg="10">
               <el-form-item label="出发地点:" prop="fromAddress">
-                <el-input v-model="travelInfo.fromAddress" ></el-input>
+                <el-input v-model="activityInfo.fromAddress" ></el-input>
                </el-form-item>
             </el-col>
 
             <el-col :xs="20" :sm="20" :md="10" :lg="10" :xg="10">
               <el-form-item label="目的地:" prop="distination">
-                <el-input v-model="travelInfo.distination" ></el-input>
+                <el-input v-model="activityInfo.distination" ></el-input>
                </el-form-item>
             </el-col>
 
             <el-col :xs="20" :sm="20" :md="10" :lg="10" :xg="10">
               <el-form-item label="车型:" prop="type">
-                <el-input v-model="travelInfo.type" ></el-input>
+                <el-input v-model="activityInfo.type" ></el-input>
                </el-form-item>
             </el-col>
 
             <el-col :xs="20" :sm="20" :md="10" :lg="10" :xg="10">
               <el-form-item label="座位数:" prop="count">
-                <el-input v-model="travelInfo.count" type="number"></el-input>
+                <el-input v-model="activityInfo.count" type="number"></el-input>
                </el-form-item>
             </el-col>
 
             <el-col :xs="20" :sm="20" :md="10" :lg="10" :xg="10">
               <el-form-item label="出发时间:" prop="goTime">
                 <el-date-picker
-                  v-model="travelInfo.goTime"
+                  v-model="activityInfo.goTime"
                   value-format="timestamp"
                   format="yyyy 年 MM 月 dd 日 HH:mm"
                   type="datetime"
@@ -160,12 +161,12 @@
 
             <el-col :xs="20" :sm="20" :md="10" :lg="10" :xg="10">
               <el-form-item label="价格:" prop="price">
-                <el-input v-model="travelInfo.price" placeholder="单位Nas" type="number"></el-input>
+                <el-input v-model="activityInfo.price" placeholder="单位Nas" type="number"></el-input>
               </el-form-item>
             </el-col>
           <el-col :xs="20" :sm="20" :md="20" :lg="20" :xg="20">
             <el-form-item label="备注" prop="remark">
-                <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model="travelInfo.remark" placeholder="备注"></el-input>
+                <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model="activityInfo.remark" placeholder="备注"></el-input>
              </el-form-item>
            </el-col>
           <el-col :span="14">
@@ -180,21 +181,113 @@
 
     <section class="bg-light" id="allList">
       <div class="container">
-        <div class="row">
-          <div class="col-lg-12 text-center">
+        <div class="row text-center">
+          <div class="col-lg-12 ">
             <h2 class="section-heading text-uppercase">活动列表</h2>
             <h3 class="section-subheading text-muted">小伙伴选择行程，支付NAS支援活动经费吧！</h3>
           </div>
+          <div class="col-lg-12">
+            
+              <div class="sportList_sx wrap">
+        <dl>
+          <dt class="ui_items_big">
+            <span><em style="background-position: 1px 1px;"></em></span>
+            <p>羽毛球</p>
+          </dt>
+          <dd>
+            <div class="item_ulist">
+              <ul class="">
+                        <li>
+                          <a onclick="typeSeach('20','足球')" href="javascript:void(0)">
+                            <span>
+                              <em style="background-position:0 -180px;"></em>
+                            </span>
+                            <p>足球</p>
+                          </a>
+                        </li>
+                        <li>
+                          <a onclick="typeSeach('22','羽毛球')" href="javascript:void(0)">
+                            <span>
+                              <em style="background-position:0 0;"></em>
+                            </span>
+                            <p>羽毛球</p>
+                          </a>
+                        </li>
+                        <li>
+                          <a onclick="typeSeach('24','网球')" href="javascript:void(0)">
+                          <span>
+                              <em style="background-position:0 -90px;"></em>
+                           </span>
+                          <p>网球</p>
+                          </a>
+                        </li>
+                        <li>
+                          <a onclick="typeSeach('21','篮球')" href="javascript:void(0)">
+                            <span>
+                              <em style="background-position:0 -225px;"></em>
+                            </span>
+                            <p>篮球</p>
+                          </a>
+                        </li>
+                        <li>
+                          <a onclick="typeSeach('23','乒乓球')" href="javascript:void(0)">
+                            <span>
+                              <em style="background-position:0 -135px;"></em>
+                            </span>
+                            <p>乒乓球</p>
+                          </a>
+                        </li>
+                        <li>
+                          <a onclick="typeSeach('25','游泳')" href="javascript:void(0)">
+                            <span>
+                            <em style="background-position:0 -45px;"></em>
+                          </span>
+                          <p>游泳</p>
+                         </a>
+                        </li>
+                        <li>
+                          <a onclick="typeSeach('26','健身')" href="javascript:void(0)">
+                            <span>
+                              <em style="background-position:0 -1125px;"></em>
+                            </span>
+                            <p>健身</p>
+                          </a>
+                        </li>
+                        <li>
+                          <a onclick="typeSeach('27','桌球')" href="javascript:void(0)">
+                            <span>
+                              <em style="background-position:0 -315px;"></em>
+                            </span>
+                            <p>桌球</p>
+                          </a>
+                        </li>
+                        <li>
+                          <a onclick="typeSeach('45','瑜伽')" href="javascript:void(0)">
+                            <span>
+                              <em style="background-position:0 -1170px;"></em>
+                            </span>
+                            <p>瑜伽</p>
+                          </a>
+                        </li>           
+              </ul>
+              <div class="iUp"><em></em></div>
+            </div>
+          </dd>
+        </dl>
+      </div>
+
+          </div>
         </div>
+
+
+
+
         <div class="row indexTable">
           <div class="next-table only-bottom-border basic-table col-md-18">
             <div class="next-table-inner">
             <el-form :inline="true" :model="search" class="demo-form-inline">
-              <el-form-item label="出发地点">
-                <el-input v-model="search.from" placeholder="模糊查询"></el-input>
-              </el-form-item>
-              <el-form-item label="目的地点">
-                <el-input v-model="search.to" placeholder="模糊查询"></el-input>
+              <el-form-item label="地点">
+                <el-input v-model="search.address" placeholder="模糊查询"></el-input>
               </el-form-item>
               <el-form-item label="状态">
                 <el-select v-model="search.status" placeholder="全部">
@@ -213,47 +306,47 @@
              <div class="perPatent clearfix" style="padding-left: 60px">
                  <dl v-for="(value,index) in allList" >
                     <dt @click="toDetail(value)">
-                        <i v-if="!value.status">新行程</i>
+                        <i v-if="!value.status">新活动</i>
                         <em></em>
                         <p class="techName" style="margin-top: 36px">
-                            <span>出发地:</span>
-                            <b>{{value.fromAddress}}</b>
+                            <span>标题:</span>
+                            <b>{{value.title}}</b>
                         </p>
                         <p class="techName">
-                            <span>目的地:</span>
-                            <b>{{value.distination}}</b>
+                            <span>场地地址:</span>
+                            <b>{{value.address}}</b>
                         </p>
                         <p class="techName">
-                            <span>出发时间:</span>
+                            <span>活动时间:</span>
                             <b>{{value.goTime | getDateTimeStr}}</b>
                         </p>
                         <p class="techName">
-                            <span>车型:</span>
-                            <b>{{value.type+' '}}</b>
+                            <span>分类:</span>
+                            <b>{{value.category}}</b>
                         </p>
                        <p class="techName">
-                            <span>座位数:</span>
+                            <span>需要伙伴:</span>
                             <b>{{value.count+'个'}}</b>
                         </p>
                         <p class="techName">
-                            <span>已有乘客:</span>
+                            <span>已有伙伴:</span>
                             <b>{{value.attents.length+'人'}}</b>
                         </p>
                         <p class="techName">
                             <span>状态:</span>
                              <b v-if="value.isAttent" style="color:#E6A23C">已参加</b>
-                             <b v-else-if="value.status" style="color:#909399">已过期</b>
-                             <b v-else-if="!value.status" style="color:#67C23A">进行中</b>
+                             <b v-else-if="value.status" style="color:#909399">活动已过期</b>
+                             <b v-else-if="!value.status" style="color:#67C23A">活动进行中</b>
                              <b v-else></b>
                         </p>
                     </dt>
                     <dd>
                         <p>
-                            <span class="advisory">{{value.price}}Nas</span>
+                            <span class="advisory">人均价格:{{value.price}}Nas</span>
                         </p>
                         <p>
                            <el-button @click="toDetail(value)" type="text" size="small">详情</el-button>
-                          <el-button type="text" size="small" v-if="!value.isAttent&&!value.status&&value.current!=value.author" @click="toAttent(value)">搭乘</el-button>
+                          <el-button type="text" size="small" v-if="!value.isAttent&&!value.status&&value.current!=value.author" @click="toAttent(value)">参加</el-button>
                         </p>
                     </dd>
                 </dl>   
@@ -480,8 +573,11 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body">
-            <h4 class="text-uppercase">行程详情</h4>
-                  <p class="item-intro text-muted">出发时间:<span>{{detailRow.goTime | getDateTimeStr}}</span></p>
+            <h4 class="text-uppercase">活动详情</h4>
+                  <p class="item-intro text-muted">活动时间:<span>{{detailRow.goTime | getDateTimeStr}}</span></p>
+                  <p>标题:
+                      <span >{{detailRow.title}}</span>
+                  </p>
                   <p>发起人姓名:
                       <span >{{detailRow.name}}</span>
                   </p>
@@ -491,29 +587,26 @@
                    <p>发起人联系方式:
                       <span>{{detailRow.phone}}</span>
                   </p>
-                   <p>出发地点:
-                      <span >{{detailRow.fromAddress}}</span>
+                   <p>场地地址:
+                      <span >{{detailRow.address}}</span>
                   </p>
-                  <p>目的地点:
-                      <span>{{detailRow.distination}}</span>
+                  <p>分类:
+                      <span>{{detailRow.category}}</span>
                   </p>
-                  <p>车型:
-                      <span>{{detailRow.type}}</span>
+                  <p>人均费用:
+                      <span>{{detailRow.price+' nas'}}</span>
                   </p>
-                  <p>车费:
-                      <span>{{detailRow.price}}</span>
-                  </p>
-                   <p>座位数:
+                   <p>需要伙伴:
                       <span>{{detailRow.count}}</span>
                   </p>
-                  <p>已参加人数:
+                  <p>已参加伙伴:
                       <span>{{detailRow.attents.length}}</span>
                   </p>
                   <p>备注:
                       <span>{{detailRow.remark}}</span>
                   </p>
-                  <p>乘客信息:
-                      <p v-if="detailRow.attents.length==0">暂无乘客</p>
+                  <p>参加伙伴信息:
+                      <p v-if="detailRow.attents.length==0">暂无伙伴</p>
                       <p v-else v-for="(item, index) in detailRow.attents">
                         {{index+1}}、{{item.name}}-{{item.phone}}<br>
                       </p>
@@ -683,4 +776,64 @@
     border: 1px solid #eeeff3;
 }
       </style>
-
+<script type="text/javascript">
+  var typeSeach = function(type,name) {
+      typeChange(name);
+  };
+  var typeChange = function(name) {
+            var pt = "";
+            if (name == "羽毛球") {
+                pt = "1px 1px";
+            } else if (name == "游泳") {
+                pt = "-2px -80px";
+            } else if (name == "网球") {
+                pt = "0 -149px";
+            } else if (name == "篮球") {
+                pt = "0 -375px";
+            } else if (name == "乒乓球") {
+                pt = "0 -223px";
+            }  else if (name == "足球") {
+                pt = "0 -300px";
+            } else if (name == "壁球") {
+                pt = "2px -450px";
+            } else if (name == "桌球") {
+                pt = "0 -525px";
+            } else if (name == "攀岩") {
+                pt = "0 -600px";
+            } else if (name == "射箭") {
+                pt = "0 -678px";
+            } else if (name == "保龄球") {
+                pt = "0 -750px";
+            } else if (name == "高尔夫") {
+                pt = "-2px -820px";
+            } else if (name == "射击") {
+                pt = "0 -902px";
+            } else if (name == "溜冰") {
+                pt = "0 -978px";
+            } else if (name == "赛车") {
+                pt = "0 -1050px";
+            } else if (name == "排球") {
+                pt = "0 -1125px";
+            } else if (name == "轮滑") {
+                pt = "0 -1200px";
+            } else if (name == "滑板") {
+                pt = "1px -1269px";
+            } else if (name == "自行车") {
+                pt = "0 -1350px";
+            } else if (name == "滑雪") {
+                pt = "0 -1423px";
+            } else if (name == "卡丁车") {
+                pt = "0 -1650px";
+            } else if (name == "马术") {
+                pt = "0 -1575px";
+            } else if (name == "飞镖") {
+                pt = "0 -1500px";
+            } else if (name == "棒球") {
+                pt = "0 -1725px";
+            } else {
+                pt = "1px 1px";
+            }
+            $('.ui_items_big em').css('background-position', pt);
+            $('.ui_items_big p').html(name);
+        }
+</script>
