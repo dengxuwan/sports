@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>拼场吧</title>
+    <link rel="icon" href="img/logo.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./files/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+    <!-- Custom styles for this template -->
+    <link href="./css/agency.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+</head>
+
+  <body id="page-top">
+    <div id="app">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top navbar-shrink" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#">拼场吧</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav text-uppercase" style="margin:auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="index.html#services">使用方法</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="index.html#publish">活动列表</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="index.html#allList">发布活动</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="center.html#personal">个人中心</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="index.html#about">关于</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="index.html#contact">联系我们</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="masthead" style="margin-top: 54px">
+      <div class="container">
+      </div>
+    </header>
+
+    <!-- Services -->
+    <section id="services" >
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h2 class="section-heading text-uppercase">使用方法</h2>
+            <h3 class="section-subheading text-muted">简易的操作步骤，快速寻找运动小伙伴</h3>
+          </div>
+        </div>
+        <div class="row text-center">
+          <div class="col-md-4">
+            <span class="fa-stack fa-4x">
+              <img src="img/GongWenBao.png">
+            </span>
+            <h4 class="service-heading">安装钱包</h4>
+            <p class="text-muted">需要安装 <a target="_blank" href="https://github.com/ChengOrangeJu/WebExtensionWallet">WebExtensionWallet</a>。移动端请安装<a target="_blank" href="https://nano.nebulas.io/index_cn.html">NAS nano 钱包</a></p>
+          </div>
+          <div class="col-md-4">
+            <span class="fa-stack fa-4x">
+              <img src="img/web.png">
+            </span>
+            <h4 class="service-heading">发布活动</h4>
+            <p class="text-muted">发布活动，等待小伙伴支付NAS,AA制订场,不再独自承担高额场地费用</p>
+          </div>
+          <div class="col-md-4">
+            <span class="fa-stack fa-4x">
+              <img src="img/mobile.png">
+            </span>
+            <h4 class="service-heading">联系小伙伴</h4>
+            <p class="text-muted">联系参与者告知具体场地地址,一起运动吧！</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portfolio Grid -->
+    <section id="publish" style="background-color:#393b3d;color:#ffffff;display:none">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h2 class="section-heading text-uppercase">成为司机</h2>
+            <h3 class="section-subheading text-muted">分享行程，让行程更有乐趣，乘客支付的NAS直接到您的钱包，没有中间商赚差价</h3>
+          </div>
+        </div>
+        <el-row :gutter="20" class="row_cust">  
+          <el-form :model="travelInfo" ref="ruleForm" :label-width="labelWidth" :rules="rules">
+            <el-col :xs="20" :sm="20" :md="15" :lg="15" :xg="15">
+              <el-form-item label="姓名:" prop="name">
+                <el-input v-model="travelInfo.name" ></el-input>
+               </el-form-item>
+            </el-col>
+
+            <el-col :xs="20" :sm="20" :md="10" :lg="10" :xg="10">
+              <el-form-item label="联系方式:" prop="phone">
+                <el-input v-model="travelInfo.phone" ></el-input>
+               </el-form-item>
+            </el-col>
+
+            <el-col :xs="20" :sm="20" :md="10" :lg="10" :xg="10">
+              <el-form-item label="出发地点:" prop="fromAddress">
+                <el-input v-model="travelInfo.fromAddress" ></el-input>
+               </el-form-item>
+            </el-col>
+
+            <el-col :xs="20" :sm="20" :md="10" :lg="10" :xg="10">
+              <el-form-item label="目的地:" prop="distination">
+                <el-input v-model="travelInfo.distination" ></el-input>
+               </el-form-item>
+            </el-col>
+
+            <el-col :xs="20" :sm="20" :md="10" :lg="10" :xg="10">
+              <el-form-item label="车型:" prop="type">
+                <el-input v-model="travelInfo.type" ></el-input>
+               </el-form-item>
+            </el-col>
+
+            <el-col :xs="20" :sm="20" :md="10" :lg="10" :xg="10">
+              <el-form-item label="座位数:" prop="count">
+                <el-input v-model="travelInfo.count" type="number"></el-input>
+               </el-form-item>
+            </el-col>
+
+            <el-col :xs="20" :sm="20" :md="10" :lg="10" :xg="10">
+              <el-form-item label="出发时间:" prop="goTime">
+                <el-date-picker
+                  v-model="travelInfo.goTime"
+                  value-format="timestamp"
+                  format="yyyy 年 MM 月 dd 日 HH:mm"
+                  type="datetime"
+                  placeholder="选择日期时间"
+                  align="right">
+                </el-date-picker>
+               </el-form-item>
+            </el-col>
+
+            <el-col :xs="20" :sm="20" :md="10" :lg="10" :xg="10">
+              <el-form-item label="价格:" prop="price">
+                <el-input v-model="travelInfo.price" placeholder="单位Nas" type="number"></el-input>
+              </el-form-item>
+            </el-col>
+          <el-col :xs="20" :sm="20" :md="20" :lg="20" :xg="20">
+            <el-form-item label="备注" prop="remark">
+                <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model="travelInfo.remark" placeholder="备注"></el-input>
+             </el-form-item>
+           </el-col>
+          <el-col :span="14">
+           <el-form-item>
+              <el-button type="primary" @click="toPublish()">分享行程</el-button>
+            </el-form-item>
+          </el-col>
+          </el-form>
+        </el-row>
+      </div>
+    </section>
+
+    <section class="bg-light" id="allList">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h2 class="section-heading text-uppercase">活动列表</h2>
+            <h3 class="section-subheading text-muted">小伙伴选择行程，支付NAS支援活动经费吧！</h3>
+          </div>
+        </div>
+        <div class="row indexTable">
+          <div class="next-table only-bottom-border basic-table col-md-18">
+            <div class="next-table-inner">
+            <el-form :inline="true" :model="search" class="demo-form-inline">
+              <el-form-item label="出发地点">
+                <el-input v-model="search.from" placeholder="模糊查询"></el-input>
+              </el-form-item>
+              <el-form-item label="目的地点">
+                <el-input v-model="search.to" placeholder="模糊查询"></el-input>
+              </el-form-item>
+              <el-form-item label="状态">
+                <el-select v-model="search.status" placeholder="全部">
+                  <el-option label="进行中" value="进行中"></el-option>
+                  <el-option label="已过期" value="已过期"></el-option>
+                  <el-option label="已参加" value="已参加"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="toSearch">查询</el-button>
+                <el-button type="success" @click="getAll">刷新</el-button>
+              </el-form-item>
+            </el-form>
+            <div id="allListTable"></div>
+            
+             <div class="perPatent clearfix" style="padding-left: 60px">
+                 <dl v-for="(value,index) in allList" >
+                    <dt @click="toDetail(value)">
+                        <i v-if="!value.status">新行程</i>
+                        <em></em>
+                        <p class="techName" style="margin-top: 36px">
+                            <span>出发地:</span>
+                            <b>{{value.fromAddress}}</b>
+                        </p>
+                        <p class="techName">
+                            <span>目的地:</span>
+                            <b>{{value.distination}}</b>
+                        </p>
+                        <p class="techName">
+                            <span>出发时间:</span>
+                            <b>{{value.goTime | getDateTimeStr}}</b>
+                        </p>
+                        <p class="techName">
+                            <span>车型:</span>
+                            <b>{{value.type+' '}}</b>
+                        </p>
+                       <p class="techName">
+                            <span>座位数:</span>
+                            <b>{{value.count+'个'}}</b>
+                        </p>
+                        <p class="techName">
+                            <span>已有乘客:</span>
+                            <b>{{value.attents.length+'人'}}</b>
+                        </p>
+                        <p class="techName">
+                            <span>状态:</span>
+                             <b v-if="value.isAttent" style="color:#E6A23C">已参加</b>
+                             <b v-else-if="value.status" style="color:#909399">已过期</b>
+                             <b v-else-if="!value.status" style="color:#67C23A">进行中</b>
+                             <b v-else></b>
+                        </p>
+                    </dt>
+                    <dd>
+                        <p>
+                            <span class="advisory">{{value.price}}Nas</span>
+                        </p>
+                        <p>
+                           <el-button @click="toDetail(value)" type="text" size="small">详情</el-button>
+                          <el-button type="text" size="small" v-if="!value.isAttent&&!value.status&&value.current!=value.author" @click="toAttent(value)">搭乘</el-button>
+                        </p>
+                    </dd>
+                </dl>   
+            </div>
+
+
+
+
+            <el-table v-show="tempVar"
+              v-loading="allListLoading"
+              :data="allList"
+              :row-class-name="tableRowClassName">
+              <el-table-column
+                prop="fromAddress"
+                label="出发地点"
+                width="200">
+              </el-table-column>
+              <el-table-column
+                prop="distination"
+                label="目的地"
+                width="200">
+              </el-table-column>
+              <el-table-column
+                prop="goTime"
+                label="出发时间"
+                width="200">
+                 <template slot-scope="scope">
+                    <span>{{scope.row.goTime | getDateTimeStr}}<span>
+                 </template>
+              </el-table-column>
+               <el-table-column
+               align="center"
+                label="费用">
+                 <template slot-scope="scope">
+                    <span>{{scope.row.price}}nas<span>
+                </template>
+              </el-table-column>
+               <el-table-column
+               align="center"
+                label="座位数">
+                 <template slot-scope="scope">
+                    <span>{{scope.row.count}}个<span>
+                </template>
+              </el-table-column>
+               <el-table-column
+               align="center"
+                label="已有乘客">
+                <template slot-scope="scope">
+                    <span>{{scope.row.attents.length}}人<span>
+                </template>
+              </el-table-column>
+               <el-table-column
+                prop="status"
+                align="center"
+                label="状态">
+                <template slot-scope="scope">
+                   <span v-if="scope.row.isAttent" style="color:#E6A23C">已参加</span>
+                   <span v-else-if="scope.row.status">已过期</span>
+                   <span v-else-if="!scope.row.status">进行中</span>
+                    <span v-else></span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                fixed="right"
+                label="操作"
+                align="center"
+                width="100">
+                <template slot-scope="scope">
+                  <el-button @click="toDetail(scope.row)" type="text" size="small">详情</el-button>
+                  <el-button type="text" size="small" v-if="!scope.row.isAttent&&!scope.row.status&&scope.row.current!=scope.row.author" @click="toAttent(scope.row)">搭乘</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            </div>
+          </div>
+        </div>
+
+
+       
+
+        <div class="row indexTable1">
+          <div class="next-table only-bottom-border basic-table col-md-18">
+            <div class="next-table-inner text-center">
+            <el-form :inline="true" :model="search" class="demo-form-inline">
+              <el-form-item label="出发地点">
+                <el-input v-model="search.from" placeholder="模糊查询"></el-input>
+              </el-form-item>
+              <el-form-item label="目的地点">
+                <el-input v-model="search.to" placeholder="模糊查询"></el-input>
+              </el-form-item>
+              <el-form-item label="行程状态">
+                <el-select v-model="search.status" placeholder="全部">
+                  <el-option label="进行中" value="进行中"></el-option>
+                  <el-option label="已过期" value="已过期"></el-option>
+                  <el-option label="已参加" value="已参加"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="toSearch">查询</el-button>
+                <el-button type="success" @click="getAll">刷新</el-button>
+              </el-form-item>
+            </el-form>
+            <div id="allListTable"></div>
+            <el-table 
+              v-loading="allListLoading"
+              :data="allList"
+              :row-class-name="tableRowClassName">
+              <el-table-column
+                prop="fromAddress"
+                label="列表"
+                align="left"
+                width="200">
+                 <template slot-scope="scope">
+                    <p>出发地:{{scope.row.fromAddress}}<p>
+                    <p>目的地:{{scope.row.distination}}<p>
+                    <p>出发时间:{{scope.row.goTime | getDateTimeStr}}<p>
+                    <p>费用:{{scope.row.price+'nas'}}<p>
+                    <p>座位数:{{scope.row.count+'个'}}<p>
+                    <p>已有乘客:{{scope.row.attents.length+'人'}}<p>
+                    <p>状态:
+                        <span v-if="scope.row.isAttent" style="color:#E6A23C">已参加</span>
+                        <span v-else-if="scope.row.status">已过期</span>
+                        <span v-else-if="!scope.row.status">进行中</span>
+                    <p>         
+                </template>
+              </el-table-column>
+              
+              <el-table-column
+                fixed="right"
+                label="操作"
+                align="center">
+                <template slot-scope="scope">
+                  <el-button @click="toDetail(scope.row)" type="text" size="small">详情</el-button>
+                  <el-button type="text" size="small" v-if="!scope.row.isAttent&&!scope.row.status&&scope.row.current!=scope.row.author" @click="toAttent(scope.row)">搭乘</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+
+            
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- About -->
+    <section id="about" class="#393b3d">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h2 class="section-heading text-uppercase">关于</h2>
+            <h3 class="section-subheading">星云链的先行者，一款使用 NAS为支付媒介的运动平台。<br>
+              我们一直倡导娱乐化运动，通过创新性的引入信息分享社区、线上约球、
+              <br>组织活动等各种社交功能，让运动不再孤单枯燥，让运动成为有趣的时尚。<br>
+            支付的费用直接转入发起活动者钱包地址，不经过任何中介，没有中间商赚差价。</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h2 class="section-heading text-uppercase">星云链的未来，等你一起创造</h2>
+            
+            <p style="color: white">
+              <el-button type="success" onclick="window.location.href='https://incentive.nebulas.io/cn/signup.html?invite=KvuuZ'">成为开发者</el-button>
+            <p style="color: white">如何联系作者: 363669440@qq.com</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div align="center">
+          <span class="copyright">Copyright © Ride 基于星云链拼车平台，<a target="_blank" href="https://nebulas.io/">了解星云链</a></span>
+        </div>
+      </div>
+    </footer>
+
+    <el-dialog
+      title="信息录入"
+      :visible.sync="dialogVisible"
+      width="400px">
+      <div>
+        <el-row class="row_cust">  
+              <el-form :model="attentInfo" ref="ruleForm1" :rules="attentRule">
+                <el-col :span="20">
+                  <el-form-item label="姓名:" prop="name">
+                    <el-input v-model="attentInfo.name" ></el-input>
+                   </el-form-item>
+                </el-col>
+
+                <el-col :span="20">
+                  <el-form-item label="联系方式:" prop="phone">
+                    <el-input v-model="attentInfo.phone" ></el-input>
+                   </el-form-item>
+                </el-col>
+              </el-form>
+            </el-row>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="attent()">确 定</el-button>
+      </span>
+  </el-dialog>
+
+    <!-- Portfolio Modals -->
+  <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+            <h4 class="text-uppercase">行程详情</h4>
+                  <p class="item-intro text-muted">出发时间:<span>{{detailRow.goTime | getDateTimeStr}}</span></p>
+                  <p>发起人姓名:
+                      <span >{{detailRow.name}}</span>
+                  </p>
+                  <p>发起人区块链钱包:
+                      <span>{{detailRow.author}}</span>
+                  </p>
+                   <p>发起人联系方式:
+                      <span>{{detailRow.phone}}</span>
+                  </p>
+                   <p>出发地点:
+                      <span >{{detailRow.fromAddress}}</span>
+                  </p>
+                  <p>目的地点:
+                      <span>{{detailRow.distination}}</span>
+                  </p>
+                  <p>车型:
+                      <span>{{detailRow.type}}</span>
+                  </p>
+                  <p>车费:
+                      <span>{{detailRow.price}}</span>
+                  </p>
+                   <p>座位数:
+                      <span>{{detailRow.count}}</span>
+                  </p>
+                  <p>已参加人数:
+                      <span>{{detailRow.attents.length}}</span>
+                  </p>
+                  <p>备注:
+                      <span>{{detailRow.remark}}</span>
+                  </p>
+                  <p>乘客信息:
+                      <p v-if="detailRow.attents.length==0">暂无乘客</p>
+                      <p v-else v-for="(item, index) in detailRow.attents">
+                        {{index+1}}、{{item.name}}-{{item.phone}}<br>
+                      </p>
+                  </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+</body></html>
+
+
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="./files/jquery.min.js"></script>
+    <script src="./files/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="./files/jquery.easing.min.js"></script>
+
+
+    <!-- Custom scripts for this template -->
+    <script src="./files/agency.min.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="js/nebulas.js"></script>
+    <script src="js/nebPay.js"></script>
+    <script src="js/config.js"></script>
+      <script src="js/index.js"></script>
+
+    <style type="text/css">
+
+    .sk-circle {
+      margin: 40px auto;
+      width: 40px;
+      height: 40px;
+      position: relative; }
+      .sk-circle .sk-child {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0; }
+      .sk-circle .sk-child:before {
+        content: '';
+        display: block;
+        margin: 0 auto;
+        width: 15%;
+        height: 15%;
+        background-color: rgb(253,200,42);
+        border-radius: 100%;
+        -webkit-animation: sk-circleBounceDelay 1.2s infinite ease-in-out both;
+                animation: sk-circleBounceDelay 1.2s infinite ease-in-out both; }
+      .sk-circle .sk-circle2 {
+        -webkit-transform: rotate(30deg);
+            -ms-transform: rotate(30deg);
+                transform: rotate(30deg); }
+      .sk-circle .sk-circle3 {
+        -webkit-transform: rotate(60deg);
+            -ms-transform: rotate(60deg);
+                transform: rotate(60deg); }
+      .sk-circle .sk-circle4 {
+        -webkit-transform: rotate(90deg);
+            -ms-transform: rotate(90deg);
+                transform: rotate(90deg); }
+      .sk-circle .sk-circle5 {
+        -webkit-transform: rotate(120deg);
+            -ms-transform: rotate(120deg);
+                transform: rotate(120deg); }
+      .sk-circle .sk-circle6 {
+        -webkit-transform: rotate(150deg);
+            -ms-transform: rotate(150deg);
+                transform: rotate(150deg); }
+      .sk-circle .sk-circle7 {
+        -webkit-transform: rotate(180deg);
+            -ms-transform: rotate(180deg);
+                transform: rotate(180deg); }
+      .sk-circle .sk-circle8 {
+        -webkit-transform: rotate(210deg);
+            -ms-transform: rotate(210deg);
+                transform: rotate(210deg); }
+      .sk-circle .sk-circle9 {
+        -webkit-transform: rotate(240deg);
+            -ms-transform: rotate(240deg);
+                transform: rotate(240deg); }
+      .sk-circle .sk-circle10 {
+        -webkit-transform: rotate(270deg);
+            -ms-transform: rotate(270deg);
+                transform: rotate(270deg); }
+      .sk-circle .sk-circle11 {
+        -webkit-transform: rotate(300deg);
+            -ms-transform: rotate(300deg);
+                transform: rotate(300deg); }
+      .sk-circle .sk-circle12 {
+        -webkit-transform: rotate(330deg);
+            -ms-transform: rotate(330deg);
+                transform: rotate(330deg); }
+      .sk-circle .sk-circle2:before {
+        -webkit-animation-delay: -1.1s;
+                animation-delay: -1.1s; }
+      .sk-circle .sk-circle3:before {
+        -webkit-animation-delay: -1s;
+                animation-delay: -1s; }
+      .sk-circle .sk-circle4:before {
+        -webkit-animation-delay: -0.9s;
+                animation-delay: -0.9s; }
+      .sk-circle .sk-circle5:before {
+        -webkit-animation-delay: -0.8s;
+                animation-delay: -0.8s; }
+      .sk-circle .sk-circle6:before {
+        -webkit-animation-delay: -0.7s;
+                animation-delay: -0.7s; }
+      .sk-circle .sk-circle7:before {
+        -webkit-animation-delay: -0.6s;
+                animation-delay: -0.6s; }
+      .sk-circle .sk-circle8:before {
+        -webkit-animation-delay: -0.5s;
+                animation-delay: -0.5s; }
+      .sk-circle .sk-circle9:before {
+        -webkit-animation-delay: -0.4s;
+                animation-delay: -0.4s; }
+      .sk-circle .sk-circle10:before {
+        -webkit-animation-delay: -0.3s;
+                animation-delay: -0.3s; }
+      .sk-circle .sk-circle11:before {
+        -webkit-animation-delay: -0.2s;
+                animation-delay: -0.2s; }
+      .sk-circle .sk-circle12:before {
+        -webkit-animation-delay: -0.1s;
+                animation-delay: -0.1s; }
+
+    @-webkit-keyframes sk-circleBounceDelay {
+      0%, 80%, 100% {
+        -webkit-transform: scale(0);
+                transform: scale(0); }
+      40% {
+        -webkit-transform: scale(1);
+                transform: scale(1); } }
+
+    @keyframes sk-circleBounceDelay {
+      0%, 80%, 100% {
+        -webkit-transform: scale(0);
+                transform: scale(0); }
+      40% {
+        -webkit-transform: scale(1);
+                transform: scale(1); } }
+
+  .el-table .warning-row {
+    background: oldlace;
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
+  .has-gutter tr tr{
+    padding:15px;
+  }
+  .next-table th {
+    padding: 15px;
+    background: #fff;
+    color: #999;
+    text-align: left;
+    font-weight: 400;
+    border: 1px solid #eeeff3;
+}
+      </style>
+
