@@ -866,6 +866,9 @@ tbody {
 	    margin-top: 0;
 	    margin-bottom: 15px;
 	}
+	.sportList_sx {
+		display:none;
+	}
 }
 
 .weixin-tip{
