@@ -171,7 +171,18 @@ function _deepCopy(obj) {
 }
 //判断两个时间戳是不是同一天
 function isToday(str, str1) {
-	if (new Date(str).toDateString() === new Date().toDateString(str1)) {
+
+
+	var y = new Date(Number(str)).getFullYear();
+	var m = new Date(Number(str)).getMonth() + 1
+	var d = new Date(Number(str)).getDate();
+
+
+	var y2 = new Date(str1).getFullYear();
+	var m2 = new Date(str1).getMonth() + 1
+	var d2 = new Date(str1).getDate();
+
+	if (y===y2&&m===m2&&d===d2) {
 		//今天
 		return true;
 	} else {

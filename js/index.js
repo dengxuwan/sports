@@ -118,8 +118,11 @@ var vue = new Vue({
                   expands: [],
                   search: {
                         address: '',
-                        status: ''
-                  }
+                        status: '',
+                        category:'羽毛球'
+                  },
+                  currentName:'羽毛球',
+                  currentPostion:'1 1px'
             }
       },
       filters: {
@@ -199,78 +202,6 @@ var vue = new Vue({
                         }
                   });
             },
-            publish: function() {
-                  var args = [JSON.stringify(vue.activityInfo)];
-                  defaultOptions.listener = function(data) {
-                        if (data.txhash) {
-                              vue.$notify({
-                                    message: "发布行程需要15秒时间写入区块链,写入成功之后会自动提醒您,请耐心等待！",
-                                    duration: 20000,
-                                    showClose: true,
-                                    type: "warning",
-                                    offset: 200
-                              });
-                              //清空
-                              vue.activityInfo = {
-                                          name: '',
-                                          phone: '',
-                                          address: '',
-                                          title: '',
-                                          category: '',
-                                          count: '',
-                                          price: '',
-                                          remark: '',
-                                          goTime: ''
-                                    },
-
-                                    console.log("交易号为" + vue.serialNumber, "发布行程交易hash");
-                              var neburl = "https://testnet.nebulas.io";
-                              var txhash = data.txhash;
-                              intervalQuery = setInterval(() => {
-                                    console.log('wait......');
-                                    axios.post(neburl + "/v1/user/getTransactionReceipt", {
-                                                hash: txhash
-                                          })
-                                          .then(d => {
-                                                if (d.data && d.data.result.execute_result !== "") {
-                                                      vue.$confirm('行程已经成功写入区块链, 点击查看?', '成功', {
-                                                            confirmButtonText: '查看',
-                                                            cancelButtonText: '取消',
-                                                            type: 'success'
-                                                      }).then(() => {
-                                                            window.location.href = "index.html#allListTable";
-                                                            vue.getAll();
-                                                      }).catch(() => {
-
-                                                      });
-                                                      // success
-                                                      clearInterval(intervalQuery);
-                                                } else if (d.data.result.status === 0) {
-                                                      vue.$notify({
-                                                            message: "分享失败，有可能是您的余额不足!",
-                                                            duration: 0,
-                                                            showClose: true,
-                                                            type: "error",
-                                                            offset: 150
-                                                      });
-                                                      clearInterval(intervalQuery);
-                                                }
-                                          });
-                              }, 6000);
-                        } else {
-                              vue.$notify({
-                                    message: "已经取消发布行程！",
-                                    duration: 5000,
-                                    showClose: true,
-                                    type: "warning",
-                                    offset: 200
-                              });
-                        }
-                  };
-
-                  vue.serialNumber = nebPay.call(config.contractAddr, "0", config.addActivity, JSON.stringify(args), defaultOptions);
-
-            },
             //处理list
             handleList: function(respArr) {
                   for (var i = 0; i < respArr.length; i++) {
@@ -308,26 +239,27 @@ var vue = new Vue({
                   this.allListLoading = true;
                   query(config.myAddress, config.getAll, "", function(resp) {
                         console.log(resp, "查询所有活动列表");
-                        var respArr = JSON.parse(resp.result)
+                        var respArr = JSON.parse(resp.result);
                         vue.allList = vue.handleList(respArr);
                         vue.cloneList = vue.allList;
                         console.log(vue.allList, "查询所有多动列表");
-                        filterCategory('羽毛球');
+                        vue.allList = vue.filterCategory(vue.cloneList,'羽毛球');
                         vue.allListLoading = false;
                         vue.tempVar = false;
                   });
             },
-            filterCategory: function(category) {
-                  var list = [];
-                  if (vue.cloneList && vue.cloneList.size > 0) {
-                        for (var i = 0; i < vue.cloneList.length; i++) {
-                              var activityInfo = vue.cloneList[i];
+            filterCategory: function(list,category) {
+                  console.log("将要过滤:"+category);
+                  var result = [];
+                  if (list && list.length > 0) {
+                        for (var i = 0; i < list.length; i++) {
+                              var activityInfo = list[i];
                               if (activityInfo.category === category) {
-                                    list.push(list);
+                                    result.push(activityInfo);
                               }
-                        }
-                        vue.allList = list;
+                        } 
                   }
+                  return result;
             },
             toAttent: function(row) {
                   if (row.attents.length >= row.count) {
@@ -363,7 +295,7 @@ var vue = new Vue({
                                                       type: "warning",
                                                       offset: 150
                                                 });
-                                                var neburl = "https://mainnet.nebulas.io";
+                                                var neburl = "https://testnet.nebulas.io";
                                                 var txhash = data.txhash;
                                                 intervalQuery = setInterval(() => {
                                                       console.log('wait......');
@@ -372,14 +304,14 @@ var vue = new Vue({
                                                             })
                                                             .then(d => {
                                                                   if (d.data && d.data.result.execute_result !== "") {
-                                                                        vue.$confirm('数据已经成功写入区块链点击查看', '成功', {
+                                                                        vue.$confirm('数据已经成功写入区块链,点击查看浏览个人中心', '成功', {
                                                                               confirmButtonText: '查看',
                                                                               cancelButtonText: '取消',
                                                                               type: 'success'
                                                                         }).then(() => {
                                                                               window.location.href = "center.html#personal";
                                                                         }).catch(() => {
-
+                                                                              
                                                                         });
                                                                         // success
                                                                         clearInterval(intervalQuery);
@@ -448,36 +380,98 @@ var vue = new Vue({
                   var list = [];
                   for (var i = 0; i < this.cloneList.length; i++) {
                         var obj = vue.cloneList[i];
-                        var from = obj.fromAddress;
-                        var to = obj.distination;
+                        var address = obj.address;
+                        var goTime = obj.goTime;
                         var status = obj.statusStr;
+                        var category = obj.category;
                         var isFrom = false;
                         var isTo = false;
                         var isStatus = false;
-                        if (this.search.from !== '' && this.search.to === '') {
-                              if (from.indexOf(this.search.from) !== -1 && status.indexOf(this.search.status) !== -1) {
+                        console.log(this.search)
+                        if (this.search.address.trim() !== '' && !this.search.goTime ) {
+                              if (address.indexOf(this.search.address) !== -1 && status.indexOf(this.search.status) !== -1) {
                                     list.push(obj);
                               }
-                        } else if (this.search.from === '' && this.search.to !== '') {
-                              if (to.indexOf(this.search.to) !== -1 && status.indexOf(this.search.status) !== -1) {
+                        } else if (this.search.address.trim() === '' && this.search.goTime) {
+                              if (isToday(goTime,this.search.goTime)  && status.indexOf(this.search.status) !== -1) {
                                     list.push(obj);
                               }
-                        } else if (this.search.from === '' && this.search.to === '') {
+                        } else if (this.search.address.trim() === '' && !this.search.goTime) {
                               if (status.indexOf(this.search.status) !== -1) {
                                     list.push(obj);
                               }
-                        } else if (this.search.from !== '' && this.search.to !== '') {
-                              if (from.indexOf(this.search.from) !== -1 && to.indexOf(this.search.to) !== -1 && status.indexOf(this.search.status) !== -1) {
+                        } else if (this.search.address.trim() !== '' && this.search.goTime) {
+                              if (address.indexOf(this.search.from) !== -1 && isToday(goTime,this.search.goTime)  && status.indexOf(this.search.status) !== -1) {
                                     list.push(obj);
                               }
-                        } else if (this.search.from === '' && this.search.to !== '') {
-                              if (to.indexOf(this.search.to) !== -1 && status.indexOf(this.search.status) !== -1) {
+                        } else if (this.search.address.trim() === '' && this.search.goTime) {
+                              if (isToday(goTime,this.search.goTime) && status.indexOf(this.search.status) !== -1) {
                                     list.push(obj);
                               }
                         }
                   }
-                  vue.allList = list;
+                  vue.allList=vue.filterCategory(list,this.search.category);
                   vue.allListLoading = false;
+            },
+            clickCategory:function(name){
+                  this.search.goTime ='';
+                  this.search.address = '';
+                  this.search.category = name;
+                  var pt = "";
+                  if (name == "羽毛球") {
+                      pt = "1px 1px";
+                  } else if (name == "游泳") {
+                      pt = "-2px -80px";
+                  } else if (name == "网球") {
+                      pt = "0 -149px";
+                  } else if (name == "篮球") {
+                      pt = "0 -375px";
+                  } else if (name == "乒乓球") {
+                      pt = "0 -223px";
+                  }  else if (name == "足球") {
+                      pt = "0 -300px";
+                  } else if (name == "壁球") {
+                      pt = "2px -450px";
+                  } else if (name == "桌球") {
+                      pt = "0 -525px";
+                  } else if (name == "攀岩") {
+                      pt = "0 -600px";
+                  } else if (name == "射箭") {
+                      pt = "0 -678px";
+                  } else if (name == "保龄球") {
+                      pt = "0 -750px";
+                  } else if (name == "高尔夫") {
+                      pt = "-2px -820px";
+                  } else if (name == "射击") {
+                      pt = "0 -902px";
+                  } else if (name == "溜冰") {
+                      pt = "0 -978px";
+                  } else if (name == "赛车") {
+                      pt = "0 -1050px";
+                  } else if (name == "排球") {
+                      pt = "0 -1125px";
+                  } else if (name == "轮滑") {
+                      pt = "0 -1200px";
+                  } else if (name == "滑板") {
+                      pt = "1px -1269px";
+                  } else if (name == "自行车") {
+                      pt = "0 -1350px";
+                  } else if (name == "滑雪") {
+                      pt = "0 -1423px";
+                  } else if (name == "卡丁车") {
+                      pt = "0 -1650px";
+                  } else if (name == "马术") {
+                      pt = "0 -1575px";
+                  } else if (name == "飞镖") {
+                      pt = "0 -1500px";
+                  } else if (name == "棒球") {
+                      pt = "0 -1725px";
+                  } else {
+                      pt = "1px 1px";
+                  }
+                  vue.allList = vue.filterCategory(vue.cloneList,name);
+                  this.currentPostion = pt;
+                  this.currentName = name;
             }
       }
 });

@@ -42,7 +42,7 @@ section h3.section-subheading {
 	font-weight: 400;
 	line-height: 2;
 	font-style: normal;
-	margin-bottom: 75px;
+	margin-bottom: 10px;
 	text-transform: none;
 	font-family: 'Droid Serif','Helvetica Neue',Helvetica,Arial,sans-serif
 }
@@ -183,9 +183,7 @@ img::-moz-selection {
 		left:22%!important;
 		top:25%!important;
 	}
-	.row_cust{
-		padding-left:15%;
-	}
+
 }
 
 header.masthead {
@@ -647,9 +645,7 @@ header.masthead {
 		-o-background-size: cover;
 		background-size: cover
 	}
-	.row_cust{
-		padding-left:20%;
-	}
+
 }
 
 .team-member {

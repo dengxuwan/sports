@@ -22,8 +22,8 @@ a:hover{text-decoration: none;color: #e83818 !important;}
 .ui_items_big p{font-size: 18px;color: #b1b2b2;text-align: center;}
 .sportList_sx dd{float: left;width: 895px;position: relative;}
 .item_ulist{width: 100%;overflow: hidden;position: absolute;z-index: 10;margin-top: 20px;}
-.item_ulist ul{border: 1px solid #f1f1f1;overflow: hidden;overflow: hidden;float: left;border-bottom: 1px dashed #EC4E45;}
-.item_ulist ul li{width: 90px;height: 88px;overflow: hidden;float: left;}
+.item_ulist ul{overflow: hidden;overflow: hidden;float: left;border-bottom: 1px dashed #EC4E45;}
+.item_ulist ul li{width: 90px;height: 110px;overflow: hidden;float: left;}
 .item_ulist ul li a{width: 90px;height: 67px;display: block;padding: 10px 0;}
 .item_ulist ul li a:hover span{background-position: 0 -196px;background-color: #fe7407}
 .item_ulist ul li a:hover em{background: url(../img/ui_item45_hover.png) no-repeat;}

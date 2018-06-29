@@ -43,7 +43,8 @@ var vue = new Vue({
                   isShow: false,
                   infoTitle:"",
                   infoType:"success",
-                  count:0
+                  count:0,
+                  myRecord:[] // 财务记录
             }
       },
       filters: {
@@ -101,7 +102,7 @@ var vue = new Vue({
                         }
                   });
             },
-            //处理list
+           //处理list
             handleList: function(respArr) {
                   for (var i = 0; i < respArr.length; i++) {
                         var obj = respArr[i];
@@ -110,9 +111,12 @@ var vue = new Vue({
                         var current = new Date().getTime();
                         if (current > goTime) {
                               obj['status'] = true;
+                              obj['statusStr'] = '已过期';
                         } else {
                               obj['status'] = false;
+                              obj['statusStr'] = '进行中';
                         }
+
 
                         var attents = obj.attents;
                         var isAttent = false;
@@ -121,6 +125,9 @@ var vue = new Vue({
                               if (attentInfo.address === vue.curWallet) {
                                     isAttent = true;
                               }
+                        }
+                        if (isAttent) {
+                              obj['statusStr'] = '已参加';
                         }
                         obj['isAttent'] = isAttent;
                   }
@@ -139,45 +146,29 @@ var vue = new Vue({
                   this.isShow = true;
                   var address ="";
                   if (!this.curWallet || this.curWallet === '') {
-                        this.infoTitle = "请安装钱包插件!详情请点击使用方法";
+                        this.infoTitle = "请安装钱包插件!详情请点击导航栏中的使用方法";
                         this.infoType="warning";
                         vue.personalLoading = false;
                         return;
                   } else {
                         address = this.curWallet;
-                        this.infoTitle = "钱包地址:" + address;
+                        this.infoTitle = "您的钱包地址:" + address;
                         this.infoType="success";
                   }
                   query(address, config.personal, "", function(resp) {
                         console.log(resp, "查询个人中心");
                         var obj = JSON.parse(resp.result)
-                        vue.myList = vue.handleList(obj.myTravels);
+                        console.log(obj, "查询个人中心");
+                        vue.myList = vue.handleList(obj.myActivies);
                         for (var i = 0; i < vue.myList.length; i++) {
                               if (vue.myList[i].attents && vue.myList[i].attents.length > 0)
                                     vue.expands.push(vue.myList[i].id);
                         }
                         vue.myAttent = obj.attentsRecords;
+                        vue.myRecord = obj.records;
                         vue.personalLoading = false;
                   });
 
-            },
-            funcIntervalQuery: function() {
-                  var defaultOptions = {
-                        callback: "https://pay.nebulas.io/api/mainnet/pay"
-                  }
-                  nebPay.queryPayInfo(vue.serialNumber, defaultOptions) //search transaction result from server (result upload to server by app)
-                        .then(function(resp) {
-                              var respObject = JSON.parse(resp)
-                              console.log(respObject, "获取交易状态返回对象") //resp is a JSON string
-                              if (respObject.code === 0 && respObject.data.status === 1) { //说明成功写入区块链
-                                    vue.getAll();
-                                    //关闭定时任务
-                                    clearInterval(intervalQuery)
-                              }
-                        })
-                        .catch(function(err) {
-                              console.log(err);
-                        });
             },
             getRowKeys: function(row) {
                   return row.id;
