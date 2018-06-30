@@ -142,7 +142,8 @@ var sportContract = function() {
 		_currentUser: "", // 当前使用人地址
 		_fee: new BigNumber(0.01),
 		_wei: 1000000000000000000,
-		_jSize: 0
+		_jSize: 0,
+		_rSize:0
 	});
 	// 定义全局的map变量
 	LocalContractStorage.defineMapProperties(this, {
@@ -197,9 +198,9 @@ sportContract.prototype = {
 			title: "相约打羽毛球，来的直接支付订场",
 			category: "羽毛球",
 			count: "5",
-			price: "0.0001",
+			price: "0.5",
 			remark: "自带羽毛球拍，这边羽毛球拍有限，谢谢",
-			goTime: "1529111359517",
+			goTime: "1529161359517",
 			time: "1529131359517",
 			attents: [],
 			comments: []
@@ -396,6 +397,11 @@ sportContract.prototype = {
 			price: activityInfo.price,
 			time: time
 		});
+
+		this.recordInfoKeys.set(this._rSize, id + "1");
+		this.recordInfos.set(id + "1", record);
+		this._rSize++;
+
 		var record1 = new FinanceRecord({
 			id: id + "2",
 			activityId: activityId,
@@ -405,9 +411,7 @@ sportContract.prototype = {
 			price: activityInfo.price,
 			time: time
 		});
-		this.recordInfoKeys.set(this._rSize, id + "1");
-		this.recordInfos.set(id + "1", record);
-		this._rSize++;
+		
 
 		this.recordInfoKeys.set(this._rSize, id + "2");
 		this.recordInfos.set(id + "2", record1);
@@ -440,9 +444,20 @@ sportContract.prototype = {
 		for (var i = 0; i < this._rSize; i++) {
 			var key = this.recordInfoKeys.get(i);
 			var record = this.recordInfos.get(key);
-			if (record.from === from || record.to === from) {
+			if ((record.from === from && record.type ==='支出')|| (record.to === from&&record.type==='收入')) {
 				list.push(record);
 			}
+		}
+		return list.reverse();
+	},
+	//获取所有财务记录
+	getAllRecords: function() {
+		var from = Blockchain.transaction.from;
+		var list = [];
+		for (var i = 0; i < this._rSize; i++) {
+			var key = this.recordInfoKeys.get(i);
+			var record = this.recordInfos.get(key);
+			list.push(record);
 		}
 		return list.reverse();
 	},

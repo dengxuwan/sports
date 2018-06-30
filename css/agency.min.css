@@ -183,7 +183,13 @@ img::-moz-selection {
 		left:22%!important;
 		top:25%!important;
 	}
-
+		.head_logo{
+		width:60px;
+		height:70px;
+	}
+	.middle_img{
+		margin-top: 92px;
+	}
 }
 
 header.masthead {
@@ -214,6 +220,13 @@ header.masthead {
 	}
 	.row_cust{
 		padding-left:2%;
+	}
+		.head_logo{
+		width:60px;
+		height:70px;
+	}
+	.middle_img{
+		margin-top: 92px;
 	}
 }
 
@@ -307,6 +320,13 @@ header.masthead {
 	}
 	.indexTable1{
 		display:block;
+	}
+	.head_logo{
+		width:60px;
+		height:70px;
+	}
+	.middle_img{
+		margin-top: 92px;
 	}
 }
 
@@ -546,6 +566,13 @@ header.masthead {
 	.row_cust{
 		padding-left:1%;
 	}
+		.head_logo{
+		width:60px;
+		height:70px;
+	}
+	.middle_img{
+		margin-top: 92px;
+	}
 }
 
 @media (min-width:992px) {
@@ -591,6 +618,13 @@ header.masthead {
 	}
 	.row_cust{
 		padding-left:15%;
+	}
+		.head_logo{
+		width:60px;
+		height:70px;
+	}
+	.middle_img{
+		margin-top: 92px;
 	}
 }
 
@@ -644,6 +678,13 @@ header.masthead {
 		-moz-background-size: cover;
 		-o-background-size: cover;
 		background-size: cover
+	}
+	.head_logo{
+		width:60px;
+		height:70px;
+	}
+	.middle_img{
+		margin-top: 92px;
 	}
 
 }
@@ -864,7 +905,15 @@ tbody {
 	}
 	.sportList_sx {
 		display:none;
+	}	
+	.head_logo{
+		width:40px;
+		height:45px;
 	}
+	.middle_img{
+		margin-top: 67px;
+	}
+
 }
 
 .weixin-tip{

@@ -238,7 +238,7 @@ var vue = new Vue({
                                     },
 
                                     console.log("交易号为" + vue.serialNumber, "发布活动交易hash");
-                              var neburl = "https://testnet.nebulas.io";
+                              var neburl = "https://mainnet.nebulas.io";
                               var txhash = data.txhash;
                               intervalQuery = setInterval(() => {
                                     console.log('wait......');

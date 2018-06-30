@@ -122,7 +122,35 @@ var vue = new Vue({
                         category:'羽毛球'
                   },
                   currentName:'羽毛球',
-                  currentPostion:'1 1px'
+                  currentPostion:'1 1px',
+                  options: [{
+                      value: '足球',
+                      label: '足球'
+                    }, {
+                      value: '羽毛球',
+                      label: '羽毛球'
+                    }, {
+                      value: '网球',
+                      label: '网球'
+                    }, {
+                      value: '篮球',
+                      label: '篮球'
+                    }, {
+                      value: '乒乓球',
+                      label: '乒乓球'
+                    },{
+                      value: '游泳',
+                      label: '游泳'
+                    },{
+                      value: '健身',
+                      label: '健身'
+                    },{
+                      value: '桌球',
+                      label: '桌球'
+                    },{
+                      value: '瑜伽',
+                      label: '瑜伽'
+                    }]
             }
       },
       filters: {
@@ -295,7 +323,7 @@ var vue = new Vue({
                                                       type: "warning",
                                                       offset: 150
                                                 });
-                                                var neburl = "https://testnet.nebulas.io";
+                                                var neburl = "https://mainnet.nebulas.io";
                                                 var txhash = data.txhash;
                                                 intervalQuery = setInterval(() => {
                                                       console.log('wait......');

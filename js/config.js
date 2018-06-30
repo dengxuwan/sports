@@ -11,8 +11,8 @@ var NebPay = require("nebpay");
 var nebPay = new NebPay();
 var config = {
 	chainId: 1,
-	apiPrefix: "https://testnet.nebulas.io", //https://testnet.nebulas.io  https://mainnet.nebulas.io
-	contractAddr: "n1wVtDBSQsdDjd5nRdKyiDiGY3Emq3VaQyH", //main n1zsohpv63CnmUs7aeVBfgeQBozpK5bmTMk test n21iah7tXxgxTZ6R81n9UuWGwULcuVansBd
+	apiPrefix: "https://mainnet.nebulas.io", //https://testnet.nebulas.io  https://mainnet.nebulas.io
+	contractAddr: "n1rpoPHCycRqpMxhLBtxoCaHCoqHJVKjeVv", //main n1zsohpv63CnmUs7aeVBfgeQBozpK5bmTMk test n21iah7tXxgxTZ6R81n9UuWGwULcuVansBd
 	myAddress: Account.NewAccount().getAddressString(),
 	gaslimit: 2000000,
 	gasprice: 1000000,
